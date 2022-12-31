@@ -1,6 +1,7 @@
 let express = require('express'),
     cors = require('cors'),
     bodyParser = require('body-parser');
+const path = require('path');
 
 const api = require('../backend/routes/file.routes');
 const processApi = require('../backend/routes/process.routes');
@@ -22,7 +23,11 @@ app.use(bodyParser.urlencoded({
     extended: false
 }));
 app.use(cors());
-// app.use('/public', express.static('public'));
+app.use(express.static(path.join(__dirname, "frontend", 'build')));
+
+app.get("", async(req, res) => {
+    res.sendFile(path.join(__dirname, "frontend", 'build', 'index.html'));
+})
 app.use('/api', api);
 app.use('/process', processApi);
 app.use('/getall', getAllApi);
